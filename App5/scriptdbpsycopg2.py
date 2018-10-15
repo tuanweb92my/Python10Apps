@@ -19,7 +19,7 @@ def insert(item,quantity,price):
     conn.commit()
     conn.close()
 
-# insert('Wine Glass',8,10.5)
+insert('Wine Glass',8,10.5)
 
 def view():
     conn = psycopg2.connect("dbname='database1' user='postgres' password='postgres123' host='localhost' port='5432' ")
