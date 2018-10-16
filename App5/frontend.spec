@@ -4,11 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['frontend.py'],
-<<<<<<< HEAD
              pathex=['/Users/nguyeant/Documents/GitHub/Python10Apps/App5'],
-=======
-             pathex=['C:\\Users\\nguyeant\\Downloads\\Python\\10Apps\\Python10Apps\\App5'],
->>>>>>> e2d258aa48b9b565039316e7c6f71f86a3ba4a22
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -34,10 +30,7 @@ exe = EXE(pyz,
           upx=True,
           runtime_tmpdir=None,
           console=False )
-<<<<<<< HEAD
 app = BUNDLE(exe,
              name='frontend.app',
              icon=None,
              bundle_identifier=None)
-=======
->>>>>>> e2d258aa48b9b565039316e7c6f71f86a3ba4a22
