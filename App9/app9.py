@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 # from flask.ext.sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
 from send_email import send_email
 from sqlalchemy.sql import func
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 
@@ -33,28 +34,23 @@ def index():
 @app.route("/success",methods=['POST'])
 
 def success():
+    global file
     if request.method == 'POST':
-        email = request.form["email_name"]
-        height = request.form["height_name"]
-        print(email,height)
-        #send_email(email,height)
-        #print(height)
-        #print(request.form)
-        #print(db.session.query(Data).filter(Data.email_==email))
-        #print(db.session.query(Data).filter(Data.email_==email).count())
-        #print(type(db.session.query(Data).filter(Data.email_==email).count()))
-        if db.session.query(Data).filter(Data.email_==email).count() == 0:
-            data=Data(email,height)
-            db.session.add(data)
-            db.session.commit()
-            average_height = db.session.query(func.avg(Data.height_)).scalar()
-            average_height=round(average_height,1)
-            count = db.session.query(Data.height_).count()
-            send_email(email,height,average_height,count)
-            print(average_height)
-            return render_template("success.html")
-    return render_template("index.html",
-     text="Seems like we've got something from that email address already ")
+        file = request.files["file"]
+        #content = file.read()
+        #print(content)
+        file.save(secure_filename("uploaded"+file.filename))
+        print(file)
+        print(type(file))
+        #file.save("uploaded"+file.filename)
+        with open("uploaded"+file.filename,"a") as f:
+            f.write("This was added later!")
+        #return render_template("success.html")
+        return render_template("index.html", btn="download.html")
+
+@app.route("/download")
+def download():
+    return send_file("uploaded"+file.filename,attachment_filename="yourfile.csv",as_attachment=True)
 
 if __name__ == "__main__":
     app.debug=True
