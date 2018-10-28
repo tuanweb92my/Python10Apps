@@ -1,0 +1,25 @@
+cd C:\Users\nguyeant\Downloads\Python\10Apps\Python10Apps\app10
+pip install virtualenv
+python -m venv virtual
+.\virtual\Scripts\activate
+pip freeze > requirements.txt
+virtualenv venv --system-site-packages
+pip freeze > requirements.txt
+pip install gunicorn
+pip freeze > requirements.txt
+pip install flask
+pip install flask_sqlalchemy
+pip install werkzeug
+pip install geopy
+pip install geocoder
+pip install pandas
+pip install time
+pip freeze > requirements.txt
+git init
+git add .
+git commit -m "first commit"
+heroku info
+heroku git:remote --app app10tuan
+git push heroku master
+heroku open
+doskey /HISTORY > history.txt
