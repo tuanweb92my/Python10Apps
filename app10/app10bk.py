@@ -35,42 +35,28 @@ def success():
         print(file)
         print(type(file))
 
-        #df_checkcol = pd.read_excel(file)
-        #print(list(df_checkcol))
-
-
+        #df = pd.read_csv(file)
         with open("Supermarket.csv","r") as f, open("Supermarket_result.csv","w",newline='') as g:
         #with open(file,"r") as f, open("Supermarket_result.csv","w",newline='') as g:
             rdr = csv.reader(f)
             headers = next(rdr, None)  # skip the headers
-            #print(headers)
-            chk_colname= False
-            for name in headers:
-                print(name.lower())
-                if name.lower() =="address":
-                    chk_colname= True
-            print(chk_colname)
+            wtr = csv.writer(g)
+            if headers:
+                wtr.writerow(headers+['Latitude']+['Longitude'])
 
-            if chk_colname==True:
-                wtr = csv.writer(g)
-                if headers:
-                    wtr.writerow(headers+['Latitude']+['Longitude'])
+            for r in rdr:
+                location = geolocator.geocode(str(r[1]), timeout=10)
+                print(location.latitude, location.longitude)
+                #r = r + [location.latitude] + [location.longitude]
+                #print(r)
+                wtr.writerow(r + [location.latitude] + [location.longitude])
+                #time.sleep(2)
 
-                for r in rdr:
-                    location = geolocator.geocode(str(r[1]), timeout=10)
-                    print(location.latitude, location.longitude)
-                    #r = r + [location.latitude] + [location.longitude]
-                    #print(r)
-                    wtr.writerow(r + [location.latitude] + [location.longitude])
-                    #time.sleep(2)
-            else:
-                return render_template("index.html", text="Please make sure you have an address column in your CSV file.")
-                #df.to_html("detail_excel.html")
+        #df.to_html("detail_excel.html")
         df = pd.read_csv("Supermarket_result.csv")
         #return render_template("index.html",btn="download.html", text="Please make sure you have an address column in your CSV file.")
-        return render_template("index.html",btn="download.html", text1=df.to_html())
+        return render_template("index.html",btn="download.html", text="Please make sure you have an address column in your CSV file.",text1=df.to_html())
         #return df.to_html()
-
 
 @app.route("/download")
 def download():
